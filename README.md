@@ -76,6 +76,69 @@ Please note that we are currently not accepting evals with custom code! While we
 
 If you think you have an interesting eval, please open a pull request with your contribution. OpenAI staff actively review these evals when considering improvements to upcoming models.
 
+## Running Tests Locally
+
+Before submitting a pull request, you should run the test suite locally to ensure your changes don't break existing functionality.
+
+### Prerequisites
+
+1. Install the package in development mode with test dependencies:
+
+```sh
+pip install -e .[torch]
+```
+
+2. Download the required NLTK data (needed for some evaluation tests):
+
+```sh
+python -c "import nltk; nltk.download('punkt_tab'); nltk.download('wordnet')"
+```
+
+### Running Tests
+
+Run all tests using pytest:
+
+```sh
+pytest
+```
+
+Run tests with verbose output:
+
+```sh
+pytest -v
+```
+
+Run a specific test file:
+
+```sh
+pytest evals/elsuite/basic/match_test.py
+```
+
+Run tests matching a specific pattern:
+
+```sh
+pytest -k "test_match"
+```
+
+### Environment Variables
+
+Some tests require API keys to be set:
+
+- `OPENAI_API_KEY`: Required for tests that interact with OpenAI's API
+
+Tests that require API keys will be skipped if the keys are not available.
+
+### Continuous Integration
+
+The test suite runs automatically on GitHub Actions for all pull requests targeting the `main` branch. The CI pipeline:
+
+1. Sets up Python 3.9
+2. Installs dependencies
+3. Downloads required NLTK data
+4. Runs the full test suite with pytest
+
+You can check the workflow configuration in `.github/workflows/run_tests.yaml`.
+
 ## FAQ
 
 Do you have any examples of how to build an eval from start to finish?
